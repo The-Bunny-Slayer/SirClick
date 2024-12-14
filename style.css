@@ -24,19 +24,23 @@ h1 {
 
 /* Sprite Animation */
 #sprite {
-  width: 64px;
-  height: 64px;
-  background: url('coin-spritesheet.png') 0 0 / 256px 64px;
-  animation: spin 0.5s steps(4) infinite;
+  width: 50px;
+  height: 50px;
+  background: url('art-guppy-coin-spritesheet-x1.png');
+  animation: spinCoinBlank 2.5s steps(1) infinite;
   cursor: pointer;
   margin: 0 auto;
 }
 
-@keyframes spin {
-  100% {
-    background-position: -256px 0;
-  }
+@keyframes spinCoinBlank {
+  0% { background-position: 0px 0px; }  
+  75% { background-position: -52px 0px; }  
+  80% { background-position: -104px 0px; } 
+  85% { background-position: -156px 0px; } 
+  90% { background-position: -0px -52px; }
+  95% { background-position: -52px -52px; }
 }
+
 
 /* Buttons */
 button {
