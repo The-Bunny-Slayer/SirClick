@@ -1,13 +1,17 @@
 let score = 0;
 let clickPower = 1;
 let upgradeCost = 10;
+let powerUpCost = 50;
+let powerUpActive = false;
 
 const scoreDisplay = document.getElementById("score");
-const clickImage = document.getElementById("click-image");
+const sprite = document.getElementById("sprite");
 const upgradeButton = document.getElementById("upgrade-button");
+const powerUpButton = document.getElementById("powerup-button");
 const gameContainer = document.getElementById("game-container");
 
-clickImage.addEventListener("click", (event) => {
+// Handle clicking the sprite
+sprite.addEventListener("click", (event) => {
   score += clickPower;
   scoreDisplay.textContent = score;
 
@@ -23,6 +27,7 @@ clickImage.addEventListener("click", (event) => {
   setTimeout(() => popup.remove(), 1000);
 });
 
+// Handle upgrading click power
 upgradeButton.addEventListener("click", () => {
   if (score >= upgradeCost) {
     score -= upgradeCost;
@@ -30,5 +35,23 @@ upgradeButton.addEventListener("click", () => {
     upgradeCost *= 2;
     scoreDisplay.textContent = score;
     upgradeButton.textContent = `Buy Upgrade (Cost: ${upgradeCost})`;
+  }
+});
+
+// Handle power-up activation
+powerUpButton.addEventListener("click", () => {
+  if (score >= powerUpCost && !powerUpActive) {
+    score -= powerUpCost;
+    powerUpActive = true;
+    clickPower *= 2;
+    powerUpButton.classList.add("active");
+    scoreDisplay.textContent = score;
+
+    // Power-up lasts for 10 seconds
+    setTimeout(() => {
+      powerUpActive = false;
+      clickPower /= 2;
+      powerUpButton.classList.remove("active");
+    }, 10000);
   }
 });

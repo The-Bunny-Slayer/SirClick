@@ -1,59 +1,81 @@
+/* Basic Styling */
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background-color: #e0f7fa;
+  background-color: #1e3a8a;
   margin: 0;
   padding: 20px;
+  color: #ffffff;
 }
 
 #game-container {
-  background: #ffffff;
+  background: linear-gradient(to bottom, #3b82f6, #1e3a8a);
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   display: inline-block;
+  position: relative;
+  overflow: hidden;
 }
 
 h1 {
-  color: #00796b;
+  color: #ffffff;
 }
 
-#click-area {
-  margin: 20px 0;
-}
-
-#click-image {
-  width: 100px;
-  height: 100px;
+/* Sprite Animation */
+#sprite {
+  width: 64px;
+  height: 64px;
+  background: url('coin-spritesheet.png') 0 0 / 256px 64px;
+  animation: spin 0.5s steps(4) infinite;
   cursor: pointer;
-  transition: transform 0.1s;
+  margin: 0 auto;
 }
 
-#click-image:active {
-  transform: scale(0.9);
+@keyframes spin {
+  100% {
+    background-position: -256px 0;
+  }
 }
 
+/* Buttons */
 button {
-  background-color: #007bff;
-  color: white;
+  background-color: #fbbf24;
+  color: #000000;
   border: none;
   border-radius: 4px;
   padding: 10px 20px;
   cursor: pointer;
   font-size: 16px;
-  transition: background-color 0.2s;
+  margin: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 button:hover {
-  background-color: #0056b3;
+  transform: scale(1.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-#score {
-  font-weight: bold;
-  font-size: 24px;
-  color: #00796b;
+#powerup-button {
+  background-color: #10b981;
 }
 
+#powerup-button.active {
+  background-color: #d97706;
+  color: #ffffff;
+  animation: glow 1s infinite alternate;
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 10px #f59e0b, 0 0 20px #f59e0b;
+  }
+  100% {
+    box-shadow: 0 0 20px #f59e0b, 0 0 30px #f59e0b;
+  }
+}
+
+/* Score Popup */
 @keyframes pop {
   0% {
     opacity: 1;
@@ -67,7 +89,7 @@ button:hover {
 
 .score-popup {
   position: absolute;
-  color: #00796b;
+  color: #ffffff;
   font-weight: bold;
   animation: pop 1s ease-out;
   pointer-events: none;
