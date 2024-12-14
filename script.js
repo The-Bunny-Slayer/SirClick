@@ -15,8 +15,8 @@ clickImage.addEventListener("click", (event) => {
   const popup = document.createElement("div");
   popup.className = "score-popup";
   popup.textContent = `+${clickPower}`;
-  popup.style.left = `${event.clientX - gameContainer.offsetLeft - 20}px`;
-  popup.style.top = `${event.clientY - gameContainer.offsetTop - 80}px`;
+  popup.style.left = `${event.clientX - gameContainer.offsetLeft - 5}px`;
+  popup.style.top = `${event.clientY - gameContainer.offsetTop - 5}px`;
   gameContainer.appendChild(popup);
 
   // Remove the popup after animation ends
