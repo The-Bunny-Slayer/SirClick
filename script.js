@@ -10,6 +10,8 @@ const upgradeButton = document.getElementById("upgrade-button");
 const powerUpButton = document.getElementById("powerup-button");
 const gameContainer = document.getElementById("game-container");
 
+loadSavedValues();
+
 // Calculate the value of a click at this current moment
 function getClickValue(){
   // This can get fancier if the powerUp ever gets upgrades :D 
@@ -17,25 +19,34 @@ function getClickValue(){
   return clickPower * powerupMultiplier;
 }
 
-// Enhanced Random Number Generator with Smart Precision
-function rng(low, high, decimals = null) {
-  const lowDecimals = (low.toString().split(".")[1] || "").length;
-  const highDecimals = (high.toString().split(".")[1] || "").length;
-  const derivedDecimals = Math.max(lowDecimals, highDecimals); // Derive max precision
-  
-  const randomValue = Math.random() * (high - low) + low;
-  
-  // If decimals is explicitly set, use it; otherwise, use derived precision
-  return decimals !== null 
-    ? parseFloat(randomValue.toFixed(decimals)) 
-    : parseFloat(randomValue.toFixed(derivedDecimals));
+function loadSavedValues(){
+  //set the values to the value saved in localStore if possible or keep its current (defualt) value
+  setScore(storage.load("score", score));
+  setUpgradeCost(storage.load("upgradeCost", upgradeCost));
+  setClickPower(storage.load("clickPower", clickPower));
+}
+
+function setScore(value){
+  score = value;
+  storage.save("score", score);
+  scoreDisplay.textContent = score;
+}
+
+function setUpgradeCost(value){
+  upgradeCost = value;
+  storage.save("upgradeCost", upgradeCost);
+  upgradeButton.textContent = `Buy Upgrade (Cost: ${upgradeCost})`;
+}
+
+function setClickPower(value){
+  clickPower = value;
+  storage.save("clickPower", clickPower);
 }
 
 // Handle clicking the sprite
 sprite.addEventListener("click", (event) => {
   const clickValue = getClickValue();
-  score += clickValue
-  scoreDisplay.textContent = score;
+  setScore(score + clickValue);  
 
   // Create a popup score animation
   const popup = document.createElement("div");
@@ -52,21 +63,18 @@ sprite.addEventListener("click", (event) => {
 // Handle upgrading click power
 upgradeButton.addEventListener("click", () => {
   if (score >= upgradeCost) {
-    score -= upgradeCost;
-    clickPower += 1;
-    upgradeCost *= 2;
-    scoreDisplay.textContent = score;
-    upgradeButton.textContent = `Buy Upgrade (Cost: ${upgradeCost})`;
+    setScore(score-upgradeCost);
+    setClickPower(clickPower + 1);
+    setUpgradeCost(upgradeCost * 2);
   }
 });
 
 // Handle power-up activation
 powerUpButton.addEventListener("click", () => {
   if (score >= powerUpCost && !powerUpActive) {
-    score -= powerUpCost;
+    setScore(score-powerUpCost);
     powerUpActive = true;
     powerUpButton.classList.add("active");
-    scoreDisplay.textContent = score;
 
     // Power-up lasts for 10 seconds
     setTimeout(() => {
